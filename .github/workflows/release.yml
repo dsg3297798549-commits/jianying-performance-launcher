@@ -23,12 +23,14 @@ jobs:
 
       - name: Build Windows executable
         shell: pwsh
-        run: .\build.ps1
+        run: |
+          .\build.ps1
+          Copy-Item '.\dist\剪映性能启动器.exe' '.\dist\JianyingPerformanceLauncher.exe'
 
       - name: Add SHA-256 to release notes
         shell: pwsh
         run: |
-          $hash = (Get-FileHash '.\dist\剪映性能启动器.exe' -Algorithm SHA256).Hash
+          $hash = (Get-FileHash '.\dist\JianyingPerformanceLauncher.exe' -Algorithm SHA256).Hash
           Add-Content -Path RELEASE_NOTES.md -Value "`n## 下载文件 SHA-256`n`n``$hash``"
 
       - name: Create GitHub Release
@@ -37,4 +39,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $tag = if ("${{ github.event_name }}" -eq "workflow_dispatch") { "${{ inputs.tag }}" } else { "${{ github.ref_name }}" }
-          gh release create "$tag" ".\dist\剪映性能启动器.exe#剪映性能启动器.exe" --title "剪映性能启动器 $tag" --notes-file RELEASE_NOTES.md
+          gh release create "$tag" ".\dist\JianyingPerformanceLauncher.exe" --title "剪映性能启动器 $tag" --notes-file RELEASE_NOTES.md

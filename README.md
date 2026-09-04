@@ -17,7 +17,7 @@
 
 ## 使用
 
-1. 在 [Releases](../../releases) 下载最新的 `剪映性能启动器.exe`。
+1. 在 [Releases](../../releases) 下载最新的 `JianyingPerformanceLauncher.exe`。
 2. 保存并退出当前剪映。
 3. 双击启动器，在窗口中点击“优化并启动剪映”。
 4. 保持启动器窗口打开，以持续监控剪映子进程。
