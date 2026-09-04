@@ -1,0 +1,33 @@
+name: Build and publish release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Build Windows executable
+        shell: powershell
+        run: .\build.ps1
+
+      - name: Add SHA-256 to release notes
+        shell: powershell
+        run: |
+          $hash = (Get-FileHash '.\dist\剪映性能启动器.exe' -Algorithm SHA256).Hash
+          Add-Content -Path RELEASE_NOTES.md -Value "`n## 下载文件 SHA-256`n`n``$hash``"
+
+      - name: Create GitHub Release
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" ".\dist\剪映性能启动器.exe#剪映性能启动器.exe" --title "剪映性能启动器 ${{ github.ref_name }}" --notes-file RELEASE_NOTES.md
